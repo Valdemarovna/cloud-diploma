@@ -50,7 +50,8 @@ def list_files(request):
             "id": f.id,
             "name": f.original_name,
             "size": f.size,
-            "owner": f.owner.username
+            "owner": f.owner.username,
+            "comment": f.comment
         } for f in files
     ])
 

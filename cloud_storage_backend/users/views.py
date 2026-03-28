@@ -48,3 +48,36 @@ def delete_user(request, user_id):
 
     User.objects.filter(id=user_id).delete()
     return Response({"message": "Deleted"})
+
+@api_view(['PATCH'])
+def make_admin(request, user_id):
+    if not (request.user.is_admin or request.user.is_superuser):
+        return Response({"error": "Forbidden"}, status=403)
+
+    try:
+        user = User.objects.get(id=user_id)
+        user.is_admin = True
+        user.save()
+        return Response({"message": "User is now admin"})
+    except User.DoesNotExist:
+        return Response({"error": "Not found"}, status=404)
+
+@api_view(['PATCH'])
+def remove_admin(request, user_id):
+    if not (request.user.is_admin or request.user.is_superuser):
+        return Response({"error": "Forbidden"}, status=403)
+
+    try:
+        user = User.objects.get(id=user_id)
+
+        # ❗ нельзя снять админа с самого себя
+        if user == request.user:
+            return Response({"error": "Cannot remove admin from yourself"}, status=400)
+
+        user.is_admin = False
+        user.save()
+
+        return Response({"message": "Admin rights removed"})
+
+    except User.DoesNotExist:
+        return Response({"error": "Not found"}, status=404)

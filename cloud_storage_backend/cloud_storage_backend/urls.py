@@ -25,6 +25,8 @@ urlpatterns = [
 
     path('users/', u.users_list),
     path('users/<int:user_id>/', u.delete_user),
+    path('users/<int:user_id>/make_admin/', u.make_admin),
+    path('users/<int:user_id>/remove_admin/', u.remove_admin),
 
     path('files/', f.list_files),
     path('upload/', f.upload_file),
