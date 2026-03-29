@@ -47,11 +47,11 @@ urlpatterns = [
 ]
 
 def serve_manifest(request):
-    path = os.path.join(settings.BASE_DIR, "frontend_build/manifest.json")
+    path = os.path.join(settings.BASE_DIR, "frontend_build/build/manifest.json")
     return FileResponse(open(path, "rb"))
 
 def serve_favicon(request):
-    path = os.path.join(settings.BASE_DIR, "frontend_build/favicon.ico")
+    path = os.path.join(settings.BASE_DIR, "frontend_build/build/favicon.ico")
     return FileResponse(open(path, "rb"))
 
 urlpatterns += [
