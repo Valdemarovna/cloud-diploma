@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 from .serializers import RegisterSerializer
+from django.http import JsonResponse
 
+def csrf(request):
+    return JsonResponse({"message": "CSRF set"})
 
 @api_view(['POST'])
 def register(request):

@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 function App() {
     useEffect(() => {
-    api.get("/login/"); // или любой GET
+    api.get("/csrf/"); // или любой GET
   }, []);
   return (
     <BrowserRouter>

@@ -38,8 +38,8 @@ export default function Navbar() {
 
         {isAuth && (
           <>
-            <Link to="/storage">Storage</Link>
-            <Link to="/admin">Admin</Link>
+            <Link to="/storage" className="nav-btn">Storage</Link>
+            <Link to="/admin" className="nav-btn">Admin</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         )}

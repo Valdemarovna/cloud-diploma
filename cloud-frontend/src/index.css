@@ -27,6 +27,25 @@ button:hover {
   background: #357abd;
 }
 
+.nav-btn {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: #4a90e2;
+  transition: 0.2s;
+}
+
+.nav-btn {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.nav-btn:hover {
+  background: #357abd;
+}
+
 input {
   margin: 5px;
   padding: 6px;

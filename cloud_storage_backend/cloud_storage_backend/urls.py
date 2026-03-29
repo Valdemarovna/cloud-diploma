@@ -19,6 +19,7 @@ from users import views as u
 from files import views as f
 
 urlpatterns = [
+    path("csrf/", u.csrf),
     path('register/', u.register),
     path('login/', u.login_view),
     path('logout/', u.logout_view),

@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../index.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
 
-  const load = async () => {
+const nav = useNavigate();
+const [loading, setLoading] = useState(true);
+
+const load = async () => {
+  try {
     const res = await api.get("/users/");
     setUsers(res.data);
-  };
+  } catch (e) {
+    nav("/storage");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     load();
