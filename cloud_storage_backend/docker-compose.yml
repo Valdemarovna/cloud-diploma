@@ -15,7 +15,6 @@ services:
     command: sh -c "python wait_for_db.py && python manage.py init_db && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
-      - ../cloud_frontend/build:/app/frontend_build
     ports:
       - "8000:8000"
     depends_on:
