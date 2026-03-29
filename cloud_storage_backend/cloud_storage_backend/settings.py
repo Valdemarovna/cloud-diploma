@@ -60,7 +60,7 @@ ROOT_URLCONF = 'cloud_storage_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,7 +150,7 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../clod-frontend/build/static"),
+    os.path.join(BASE_DIR, "../cloud-frontend/build/static"),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
