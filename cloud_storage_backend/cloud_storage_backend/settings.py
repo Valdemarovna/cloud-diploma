@@ -148,3 +148,9 @@ CSRF_COOKIE_SAMESITE = "Lax"
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "../clod-frontend/build/static"),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")

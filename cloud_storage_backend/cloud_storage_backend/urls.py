@@ -17,8 +17,10 @@ Including another URLconf
 from django.urls import path
 from users import views as u
 from files import views as f
+from django.views.generic import TemplateView
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name='index.html')),
     path("csrf/", u.csrf),
     path('register/', u.register),
     path('login/', u.login_view),
