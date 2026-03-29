@@ -150,7 +150,7 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../cloud-frontend/build/static"),
+    os.path.join(BASE_DIR, "frontend_build/static"),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
