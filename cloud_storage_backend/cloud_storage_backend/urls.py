@@ -18,6 +18,9 @@ from django.urls import path
 from users import views as u
 from files import views as f
 from django.views.generic import TemplateView
+from django.http import FileResponse
+import os
+from django.conf import settings
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
@@ -41,4 +44,17 @@ urlpatterns = [
     path('files/<int:file_id>/link/', f.get_public_link),
     path('download/<int:file_id>/', f.download_file),
     path('public/<uuid:token>/', f.public_download, name='public_download'),
+]
+
+def serve_manifest(request):
+    path = os.path.join(settings.BASE_DIR, "frontend_build/manifest.json")
+    return FileResponse(open(path, "rb"))
+
+def serve_favicon(request):
+    path = os.path.join(settings.BASE_DIR, "frontend_build/favicon.ico")
+    return FileResponse(open(path, "rb"))
+
+urlpatterns += [
+    path("manifest.json", serve_manifest),
+    path("favicon.ico", serve_favicon),
 ]
