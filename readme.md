@@ -99,6 +99,7 @@ docker compose down
 
 ### 🧪 При необходимости можно настроить приложение
 
+Дополнительный конфиг в файле:
 ```
-Дополнительный конфиг в файле /cloud_storage_backend/cloud_storage_backend/config.py
+/cloud_storage_backend/cloud_storage_backend/config.py
 ```
