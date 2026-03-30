@@ -7,6 +7,7 @@ export default function StoragePage() {
   const { isAuth } = useSelector(s => s.auth);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
+  const [links, setLinks] = useState({});
   const loadUsers = async () => {
   try {
     const res = await api.get("/users/");
@@ -65,6 +66,14 @@ export default function StoragePage() {
 
   const getLink = async (id) => {
     const res = await api.get(`/files/${id}/link/`);
+
+    // сохраняем ссылку
+    setLinks(prev => ({
+      ...prev,
+      [id]: res.data.link
+    }));
+
+    // копируем (можно оставить)
     navigator.clipboard.writeText(res.data.link);
     alert("Copied!");
   };
@@ -102,7 +111,7 @@ export default function StoragePage() {
             <button onClick={() => updateComment(f.id)}>Comment</button>
             <button onClick={() => getLink(f.id)}>Copy Link</button>
 
-            <a href={`http://localhost:8000/download/${f.id}/`}>
+            <a href={`/download/${f.id}/`}>
               <button>Download</button>
             </a>
           </div>
