@@ -74,8 +74,7 @@ export default function StoragePage() {
     }));
 
     // копируем (можно оставить)
-    navigator.clipboard.writeText(res.data.link);
-    alert("Copied!");
+    alert(res.data.link);
   };
 
   return (
