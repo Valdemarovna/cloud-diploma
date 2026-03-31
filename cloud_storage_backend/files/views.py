@@ -29,11 +29,11 @@ def upload_file(request):
 def list_files(request):
     user_id = request.GET.get('user_id')
 
-    # 👤 Обычный пользователь
+    # Обычный пользователь
     if not is_admin(request.user):
         files = File.objects.filter(owner=request.user)
 
-    # 👑 Админ
+    # Админ
     else:
         if user_id:
             try:

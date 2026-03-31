@@ -30,7 +30,7 @@ export default function StoragePage() {
 
   useEffect(() => {
     if (!isAuth) {
-      setFiles([]); // очистка
+      setFiles([]);
       return;
     };
     load();
@@ -73,7 +73,7 @@ export default function StoragePage() {
       [id]: res.data.link
     }));
 
-    // копируем (можно оставить)
+    // выводим алерт с ссылкой
     alert(res.data.link);
   };
 

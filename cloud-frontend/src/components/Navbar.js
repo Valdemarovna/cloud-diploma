@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     await api.post("/logout/");
     dispatch(logout());
-    nav("/"); // 👈 редирект
+    nav("/"); // редирект
   };
 
   return (

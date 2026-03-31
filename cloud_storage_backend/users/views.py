@@ -73,7 +73,7 @@ def remove_admin(request, user_id):
     try:
         user = User.objects.get(id=user_id)
 
-        # ❗ нельзя снять админа с самого себя
+        # нельзя снять админа с самого себя
         if user == request.user:
             return Response({"error": "Cannot remove admin from yourself"}, status=400)
 
