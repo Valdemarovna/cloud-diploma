@@ -40,7 +40,7 @@ urlpatterns = [
     path('files/<int:file_id>/', f.delete_file),
     path('files/<int:file_id>/rename/', f.rename_file),
     path('files/<int:file_id>/comment/', f.update_comment),
-    path('files/<int:file_id>/delete/', f.delete_file),
+    path('files/<int:file_id>/', f.delete_file),
 
     path('files/<int:file_id>/link/', f.get_public_link),
     path('download/<int:file_id>/', f.download_file),
@@ -60,4 +60,9 @@ urlpatterns += [
     path("favicon.ico", serve_favicon),
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+#urlpatterns += static(settings.STATIC_URL, document_root=os.path.join(settings.BASE_DIR, '../frontend_build/build/static'))
+
+#urlpatterns += [
+#    path('', TemplateView.as_view(template_name="index.html")),
+#]
