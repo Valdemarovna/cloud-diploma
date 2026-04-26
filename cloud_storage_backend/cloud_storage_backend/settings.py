@@ -143,10 +143,14 @@ AUTH_USER_MODEL = 'users.User'
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "http://89.104.69.130",
+    "http://89.104.69.130:8000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://89.104.69.130",
+    "http://89.104.69.130:8000",
 ]
 
 SESSION_COOKIE_SAMESITE = "Lax"
