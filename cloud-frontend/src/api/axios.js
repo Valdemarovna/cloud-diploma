@@ -15,7 +15,7 @@ function getCookie(name) {
 }
 
 const api = axios.create({
-  baseURL: "",
+  baseURL: "https://89.104.69.130",
   withCredentials: true,
 });
 

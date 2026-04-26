@@ -141,16 +141,15 @@ MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = 'users.User'
 
+CORS_ALLOW_ALL_ORIGINS = False
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://89.104.69.130",
-    "http://89.104.69.130:8000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://89.104.69.130",
-    "http://89.104.69.130:8000",
 ]
 
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -158,6 +157,7 @@ CSRF_COOKIE_SAMESITE = "Lax"
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
