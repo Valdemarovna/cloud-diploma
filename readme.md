@@ -61,6 +61,7 @@
 
 * Docker
 * Docker Compose
+* Nginx
 
 ---
 
@@ -80,14 +81,12 @@ docker compose up --build
 После запуска:
 
 ```
-http://localhost:8000
+https://89.104.69.130/
 ```
+Стандартные пользователи
+admin/Admin123!
+user/User123!
 
-или:
-
-```
-http://<SERVER_IP>:8000
-```
 ### ❌ Остановка проекта
 
 ```bash
