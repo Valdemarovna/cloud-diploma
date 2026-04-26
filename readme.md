@@ -84,8 +84,8 @@ docker compose up --build
 https://89.104.69.130/
 ```
 Стандартные пользователи
-admin/Admin123!
-user/User123!
+* admin/Admin123!
+* user/User123!
 
 ### ❌ Остановка проекта
 
