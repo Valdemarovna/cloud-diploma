@@ -101,3 +101,9 @@ docker compose down
 ```
 /cloud_storage_backend/cloud_storage_backend/config.py
 ```
+
+При необходимости внесения изменений и пересборки frontend, нужно:
+* внести необходимые изменения
+* собрать проект npm run build
+* Положить файлы из static в staticfiles
+* положить index.html в template
