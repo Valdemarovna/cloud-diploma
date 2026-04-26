@@ -159,6 +159,8 @@ CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, "../frontend_build/build/static"),
 #]
