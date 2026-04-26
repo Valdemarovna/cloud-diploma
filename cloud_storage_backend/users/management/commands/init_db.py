@@ -65,7 +65,7 @@ class Command(BaseCommand):
                 username="admin",
                 email="admin@mail.com",
                 password="Admin123!",
-                isAdmin = True
+                is_admin = True
             )
             self.stdout.write("👑 Superuser created: admin / Admin123!")
         else:
