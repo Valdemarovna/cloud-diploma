@@ -29,9 +29,11 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.fulfilled, (state) => {
+      .addCase(login.fulfilled, (state,action) => {
         state.isAuth = true;
         state.error = null;
+        state.user = action.payload;
+        state.isAdmin = true;
       })
       .addCase(login.rejected, (state) => {
         state.error = "Login failed";

@@ -7,6 +7,8 @@ from users.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 import logging
+from rest_framework.pagination import PageNumberPagination
+from django.db.models.functions import Coalesce
 
 logger = logging.getLogger(__name__)
 
@@ -35,35 +37,44 @@ def upload_file(request):
     return Response({"id": file.id})
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def list_files(request):
-    user_id = request.GET.get('user_id')
+    user = request.user
 
-    # Обычный пользователь
-    if not is_admin(request.user):
-        files = File.objects.filter(owner=request.user)
+    queryset = File.objects.all()
 
-    # Админ
+    if not user.is_admin:
+        queryset = queryset.filter(owner=user)
     else:
+        user_id = request.GET.get("user_id")
         if user_id:
-            try:
-                target_user = User.objects.get(id=user_id)
-                files = File.objects.filter(owner=target_user)
-            except User.DoesNotExist:
-                logger.error(f"User {request.user} not found")
-                return Response({"error": "User not found"}, status=404)
+            queryset = queryset.filter(owner_id=user_id)
         else:
-            # если не передан user_id — вернуть ВСЕ файлы
-            files = File.objects.all()
+            logger.error(f"User {request.user} not found")
+            return Response({"error": "User not found"}, status=404)
 
-    return Response([
-        {
+    ordering = request.GET.get("ordering")
+    if ordering:
+        queryset = queryset.order_by(ordering)
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 10
+
+    page = paginator.paginate_queryset(queryset, request)
+
+    data = []
+    for f in page:
+        data.append({
             "id": f.id,
             "name": f.original_name,
             "size": f.size,
             "owner": f.owner.username,
-            "comment": f.comment
-        } for f in files
-    ])
+            "comment": f.comment,
+            "uploaded_at": f.uploaded_at,
+            "last_download": f.last_download,
+        })
+
+    return paginator.get_paginated_response(data)
 
 @api_view(['DELETE'])
 def delete_file(request, file_id):

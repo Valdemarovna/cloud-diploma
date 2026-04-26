@@ -6,6 +6,13 @@ from .models import User
 from .serializers import RegisterSerializer
 from django.http import JsonResponse
 import logging
+from django.db.models import Count, Sum
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.pagination import PageNumberPagination
+from django.db.models.functions import Coalesce
+from files.models import File
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +52,57 @@ def logout_view(request):
     return Response({"message": "Logged out"})
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def users_list(request):
+    if not request.user.is_admin:
+        return Response({"error": "Forbidden"}, status=403)
+
+    users = User.objects.all()
+
+    # сортировка
+    ordering = request.GET.get("ordering")
+    if ordering:
+        users = users.order_by(ordering)
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 10
+
+    page = paginator.paginate_queryset(users, request)
+
+    data = []
+    for u in page:
+        file_count = File.objects.filter(owner=u).count()
+        total_size = File.objects.filter(owner=u).aggregate(
+            total=Coalesce(Sum("size"), 0)
+        )["total"]
+
+        data.append({
+            "id": u.id,
+            "username": u.username,
+            "email": u.email,
+            "is_admin": u.is_admin,
+            "file_count": file_count,
+            "total_size": total_size,
+        })
+
+    return paginator.get_paginated_response(data)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def toggle_admin(request, user_id):
+    if not (request.user.is_admin or request.user.is_superuser):    
+        return Response({"error": "Forbidden"}, status=403)
+    user = User.objects.get(id=user_id)
+    if user == request.user:
+        logger.warning(f"Cannot remove admin from yourself")
+        return Response({"error": "Cannot remove admin from yourself"}, status=400)
+    user.is_admin = not user.is_admin
+    user.save()
+
+    return Response({"is_admin": user.is_admin})
+
+@api_view(['GET'])
+def list_users(request):
     if not (request.user.is_admin or request.user.is_superuser):
         return Response({"error": "Forbidden"}, status=403)
 

@@ -22,6 +22,7 @@ from django.http import FileResponse
 import os
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
@@ -30,7 +31,10 @@ urlpatterns = [
     path('login/', u.login_view),
     path('logout/', u.logout_view),
 
+    path('admin/', admin.site.urls),
+
     path('users/', u.users_list),
+    path("users/<int:user_id>/admin/", u.toggle_admin),
     path('users/<int:user_id>/', u.delete_user),
     path('users/<int:user_id>/make_admin/', u.make_admin),
     path('users/<int:user_id>/remove_admin/', u.remove_admin),

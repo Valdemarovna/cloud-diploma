@@ -2,70 +2,87 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function AdminPage() {
+  const { isAdmin, isAuth } = useSelector(s => s.auth);
+  const nav = useNavigate();
+
   const [users, setUsers] = useState([]);
+  const [next, setNext] = useState(null);
+  const [prev, setPrev] = useState(null);
 
-const nav = useNavigate();
-const [loading, setLoading] = useState(true);
+  // 🔥 загрузка пользователей
+  const load = async (url = "/users/") => {
+    try {
+      const res = await api.get(url);
 
-const load = async () => {
-  try {
-    const res = await api.get("/users/");
-    setUsers(res.data);
-  } catch (e) {
-    nav("/storage");
-  } finally {
-    setLoading(false);
-  }
-};
+      setUsers(res.data.results);
+      setNext(res.data.next);
+      setPrev(res.data.previous);
+
+    } catch (e) {
+      console.error("Failed to load users", e);
+    }
+  };
 
   useEffect(() => {
-    load();
-  }, []);
+    if (isAuth && isAdmin) {
+      load();
+    }
+  }, [isAuth, isAdmin]);
 
-  const remove = async (id) => {
+  if (!isAuth) {
+    return <div>Please login</div>;
+  }
+
+  if (!isAdmin) {
+    return <div>Access denied</div>;
+  }
+
+  const toggleAdmin = async (id) => {
+    await api.patch(`/users/${id}/admin/`);
+    load();
+  };
+
+  const deleteUser = async (id) => {
+    if (!window.confirm("Delete user?")) return;
+
     await api.delete(`/users/${id}/`);
-    load();
-  };
-
-  const makeAdmin = async (id) => {
-    await api.patch(`/users/${id}/make_admin/`);
-    load();
-  };
-
-  const removeAdmin = async (id) => {
-    await api.patch(`/users/${id}/remove_admin/`);
     load();
   };
 
   return (
     <div className="container">
-      <h2>👑 Users</h2>
+      <h2>👑 Admin Panel</h2>
 
       {users.map(u => (
-        <div key={u.id} style={{
-          border: "1px solid #ddd",
-          padding: 10,
-          marginTop: 10,
-          borderRadius: 8
-        }}>
+        <div key={u.id} className="card">
           <b>{u.username}</b> ({u.email})
+
+          <div>Files: {u.file_count}</div>
+          <div>Size: {(u.total_size / 1024 / 1024).toFixed(2)} MB</div>
           <div>Admin: {u.is_admin ? "Yes" : "No"}</div>
 
-          <button onClick={() => remove(u.id)}>Delete</button>
+          <button onClick={() => toggleAdmin(u.id)}>
+            Toggle Admin
+          </button>
 
-          {u.is_admin ? (
-            <button onClick={() => removeAdmin(u.id)}>
-              Remove admin
-            </button>
-          ) : (
-            <button onClick={() => makeAdmin(u.id)}>
-              Make admin
-            </button>
-          )}
+          <button onClick={() => deleteUser(u.id)}>
+            Delete
+          </button>
+
+          <button onClick={() => nav(`/storage?user=${u.id}`)}>
+            Open Storage
+          </button>
         </div>
       ))}
+
+      {/* пагинация */}
+      <div style={{ marginTop: 20 }}>
+        {prev && <button onClick={() => load(prev)}>⬅ Prev</button>}
+        {next && <button onClick={() => load(next)}>Next ➡</button>}
+      </div>
     </div>
   );
 }
